@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class MusicLibraryMain extends Application {
+public class MusicLibraryApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         // create a new MusicLibrary object
