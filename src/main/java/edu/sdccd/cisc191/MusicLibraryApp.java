@@ -7,8 +7,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.util.List;
-
 public class MusicLibraryApp extends Application {
     @Override
     public void start(Stage primaryStage) {
@@ -17,7 +15,7 @@ public class MusicLibraryApp extends Application {
         MusicLibraryUI ui = new MusicLibraryUI(library);
         Scene scene = new Scene(ui, 400, 500);
 
-        // create some sample tracks
+        /*// create some sample tracks
         MusicTrack track1 = new MusicTrack("Title 1",
                 "Artist 1",
                 "Album 1",
@@ -43,7 +41,7 @@ public class MusicLibraryApp extends Application {
         library.removeTrack(track2);
 
         // get the list of tracks from the library
-        List<MusicTrack> tracks = library.getTracks();
+        List<MusicTrack> tracks = library.getTracks();*/
 
         // Set the Horizontal grow and Vertical grow constraints for the UI elements
         HBox.setHgrow(ui, Priority.ALWAYS);
