@@ -43,7 +43,6 @@ public class MusicLibraryUI extends VBox {
         // Set the ListView items to the new ObservableList
         trackListView.setItems(observableTracks);
 
-
         // Set the style of the play button using the Styles class
         Styles.setButtonStyle(stopButton);
         Styles.setButtonStyle(nextButton);

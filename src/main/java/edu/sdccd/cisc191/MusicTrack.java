@@ -29,12 +29,12 @@ public class MusicTrack {
         this.filepath = filepath.replace("\\","/");
 
         // Create a new media player from the file path, if the file exists
-        if (new File(filepath).exists()) {
-            this.player = new MediaPlayer(new Media(filepath));
+        if (new File(this.filepath).exists()) {
+            this.player = new MediaPlayer(new Media(this.filepath));
             // get duration of the track in seconds
             this.trackDuration = player.getTotalDuration().toSeconds();
         } else {
-            throw new IllegalArgumentException("Invalid file path: " + filepath);
+            throw new IllegalArgumentException("Invalid file path: " + this.filepath);
         }
     }
 
