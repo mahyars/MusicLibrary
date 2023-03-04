@@ -7,12 +7,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+
+import java.util.List;
+
 public class MusicLibraryUI extends VBox {
     private MusicTrack currentTrack;
     private TextField titleField;
     private boolean isPlaying = false;
     private Slider trackSlider;
-    private Label timeLabel;
     private MusicLibrary library;
     private ListView<MusicTrack> trackListView;
     private Button addTrackButton;
@@ -32,16 +34,10 @@ public class MusicLibraryUI extends VBox {
         Button nextButton = new Button("Next");
         Button rewindButton = new Button("Rewind");
         trackSlider = new Slider();
-        timeLabel = new Label("0:00");
+        Label timeLabel = new Label("0:00");
         addTrackButton = new Button("Add Track");
         removeTrackButton = new Button("Remove Track");
         trackListView = new ListView<MusicTrack>();
-
-        // Create an ObservableList from the ArrayList returned by library.getTracks()
-        ObservableList<MusicTrack> observableTracks = FXCollections.observableArrayList(library.getTracks());
-
-        // Set the ListView items to the new ObservableList
-        trackListView.setItems(observableTracks);
 
         // Set the style of the play button using the Styles class
         Styles.setButtonStyle(stopButton);
@@ -50,6 +46,9 @@ public class MusicLibraryUI extends VBox {
         Styles.setButtonStyle(playPauseButton);
         Styles.setButtonStyle(addTrackButton);
         Styles.setButtonStyle(removeTrackButton);
+
+        // Initialize observableTracks with tracks from the library and set it as the items of the trackListView
+        ObservableList<MusicTrack> observableTracks = FXCollections.observableArrayList(library.getTracks());
 
         // Set event handler for the add track button
         addTrackButton.setOnAction(event -> {
@@ -68,6 +67,18 @@ public class MusicLibraryUI extends VBox {
             }
         });
 
+        /*Create a choice box for the genres and set an event handler to update
+        the trackListView with the tracks for the selected genre*/
+        String[] genres = library.getGenres();
+        ChoiceBox<String> genreChoiceBox = new ChoiceBox<>(FXCollections.observableArrayList(genres));
+        genreChoiceBox.setOnAction(event -> {
+            // Get the selected genre
+            String selectedGenre = genreChoiceBox.getValue();
+            // Get the list of tracks for the selected genre
+            List<MusicTrack> tracks = library.getTracksByGenre(selectedGenre);
+            // Update the trackListView with the tracks for the selected genre
+            trackListView.setItems(FXCollections.observableArrayList(tracks));
+        });
 
         // Set event handler for the play/pause button
         playPauseButton.setOnAction(event -> {
@@ -168,4 +179,3 @@ public class MusicLibraryUI extends VBox {
         }
     }
 }
-

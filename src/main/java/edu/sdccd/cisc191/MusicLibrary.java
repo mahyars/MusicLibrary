@@ -1,44 +1,64 @@
 package edu.sdccd.cisc191;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MusicLibrary {
-    // the list of music tracks in the library
-    private List<MusicTrack> tracks;
+    // Create a 2D array to store tracks by genre
+    private Map <String, List<MusicTrack>> tracksByGenre;
 
-    // initialize the list of music tracks to an empty ArrayList
     public MusicLibrary() {
-        tracks = new ArrayList<>();
+        tracksByGenre = new HashMap<>();
     }
 
-    // Add a music track to the library
     public void addTrack(MusicTrack track) {
-        // initialize the list of music tracks to an empty ArrayList
+        // Add track to the corresponding genre array in the map
+        String genre = track.getGenre();
+        List<MusicTrack> tracks = tracksByGenre.getOrDefault(genre, new ArrayList<>());
         tracks.add(track);
+        tracksByGenre.put(genre, tracks);
     }
 
-    // Remove a music track from the library
     public void removeTrack(MusicTrack track) {
-        // remove the music track from the list of music tracks
-        tracks.remove(track);
+        // Remove track from the corresponding genre array in the map
+        String genre = track.getGenre();
+        List<MusicTrack> tracks = tracksByGenre.get(genre);
+        if (tracks != null) {
+            tracks.remove(track);
+            tracksByGenre.put(genre, tracks);
+        }
     }
 
-    // Get the list of music tracks in the library
     public List<MusicTrack> getTracks() {
-        // return the list of music tracks
-        return tracks;
+        // Get all tracks from all genres
+        List<MusicTrack> allTracks = new ArrayList<>();
+        for (List<MusicTrack> tracks : tracksByGenre.values()) {
+            allTracks.addAll(tracks);
+        }
+        return allTracks;
     }
 
-    // Get the number of music tracks in the library
+    public String[] getGenres() {
+        // Get the set of genres from the map
+        Set<String> genreSet = tracksByGenre.keySet();
+
+        // Convert the set to an array and return it
+        String[] genres = new String[genreSet.size()];
+        genreSet.toArray(genres);
+        return genres;
+    }
+
     public int getTrackCount() {
-        // return the number of music tracks in the list
-        return tracks.size();
+        // Get the total number of tracks in the library
+        return getTracks().size();
     }
 
-    // Get a music track from the library by index
     public MusicTrack getTrack(int index) {
-        // return the music track at the specified index in the list
-        return tracks.get(index);
+        // Get the track at the specified index from all genres
+        return getTracks().get(index);
+    }
+
+    public List<MusicTrack> getTracksByGenre(String genre) {
+        // Get all tracks from a specific genre
+        return tracksByGenre.getOrDefault(genre, new ArrayList<>());
     }
 }

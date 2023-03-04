@@ -3,6 +3,7 @@ package edu.sdccd.cisc191;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
 import java.io.File;
 
 public class MusicTrack {
@@ -30,9 +31,15 @@ public class MusicTrack {
 
         // Create a new media player from the file path, if the file exists
         if (new File(this.filepath).exists()) {
-            this.player = new MediaPlayer(new Media(this.filepath));
-            // get duration of the track in seconds
-            this.trackDuration = player.getTotalDuration().toSeconds();
+            Media media = new Media(new File(this.filepath).toURI().toString());
+            this.player = new MediaPlayer(media);
+            this.player.setOnReady(() -> {
+                // get duration of the track in seconds
+                this.trackDuration = player.getTotalDuration().toSeconds();
+            });
+            this.player.setOnError(() -> {
+                System.err.println("Failed to create MediaPlayer");
+            });
         } else {
             throw new IllegalArgumentException("Invalid file path: " + this.filepath);
         }
@@ -66,10 +73,16 @@ public class MusicTrack {
             player.stop();
 
             // Create a new player for the next track and start playing it
-            player = new MediaPlayer(new Media(nextFilePath));
-            // get duration of the track in seconds
-            this.trackDuration = player.getTotalDuration().toSeconds();
-            player.play();
+            Media media = new Media(new File(nextFilePath).toURI().toString());
+            player = new MediaPlayer(media);
+            player.setOnReady(() -> {
+                // get duration of the track in seconds
+                this.trackDuration = player.getTotalDuration().toSeconds();
+                player.play();
+            });
+            player.setOnError(() -> {
+                System.err.println("Failed to create MediaPlayer");
+            });
         }
     }
 
@@ -83,27 +96,22 @@ public class MusicTrack {
 
     // Getter methods for the title, artist, album, genre, and file path of the track
     public String getTitle() {
-
         return title;
     }
 
     public String getArtist() {
-
         return artist;
     }
 
     public String getAlbum() {
-
         return album;
     }
 
     public String getGenre() {
-
         return genre;
     }
 
     public String getFilepath() {
-
         return filepath;
     }
 
@@ -114,7 +122,7 @@ public class MusicTrack {
 
     // Method to set the track position
     public void setTrackPosition(double duration) {
-
         player.seek(Duration.millis(duration));
     }
 }
+
