@@ -8,14 +8,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class MusicLibraryManagerUI extends VBox {
+public class MusicManagerUI extends VBox {
     private MusicLibrary library;
     private ListView<MusicTrack> trackListView;
     private Button addTrackButton;
     private Button removeTrackButton;
     private TextField titleField;
 
-    public MusicLibraryManagerUI(MusicLibrary library) {
+    public MusicManagerUI(MusicLibrary library) {
         // Add reference to MusicLibrary instance
         this.library = library;
 

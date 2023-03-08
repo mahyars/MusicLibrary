@@ -1,8 +1,11 @@
 package edu.sdccd.cisc191;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class MusicLibrary {
+public class MusicLibrary implements Serializable, Comparable<MusicLibrary> {
     // 2D array to store tracks by genre and album
     private MusicTrack[][] tracks;
 
@@ -120,6 +123,11 @@ public class MusicLibrary {
             }
         }
         return genreIndex;
+    }
+    @Override
+    public int compareTo(MusicLibrary other) {
+        // Compare two MusicLibrary objects by their total number of tracks
+        return Integer.compare(this.getTrackCount(), other.getTrackCount());
     }
 }
 
