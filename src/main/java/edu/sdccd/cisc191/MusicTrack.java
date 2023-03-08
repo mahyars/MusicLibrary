@@ -3,10 +3,12 @@ package edu.sdccd.cisc191;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import java.io.File;
 
-public class MusicTrack {
-    // Instance variables for the title, artist, album, genre, file path, and media player
+import java.io.File;
+import java.io.Serializable;
+
+public class MusicTrack implements Serializable, Comparable<MusicTrack> {
+    // Instance variables
     private String title;
     private String artist;
     private String album;
@@ -116,5 +118,10 @@ public class MusicTrack {
     public void setTrackPosition(double duration) {
 
         player.seek(Duration.millis(duration));
+    }
+    @Override
+    public int compareTo(MusicTrack other) {
+        // Compare two MusicTrack objects by their track duration
+        return Double.compare(this.getTrackDuration(), other.getTrackDuration());
     }
 }
