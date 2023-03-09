@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="36a3bdc1-12c9-4356-a2da-a199cd213a43" name="Changes" comment="Replaced the filepath String with this.filepath in MusicTrack">
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicLibrary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicLibrary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicLibraryUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicLibraryUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicTrack.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/edu/sdccd/cisc191/MusicTrack.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicLibrary.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicLibrary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicLibraryUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicLibraryUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicTrack.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/edu/sdccd/cisc191/MusicTrack.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="workspaceImportEnabled" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2M0sSzxTfWWa3WInop4SwXaqWOH" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/admin/OneDrive - sdccd.edu/Spring 2023/Java 191/MusicLibrary",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.editor",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Application.MusicLibraryApp">
+    <configuration name="MusicLibraryApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.sdccd.cisc191.MusicLibraryApp" />
+      <module name="MusicLibrary" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.sdccd.cisc191.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MusicLibraryMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.sdccd.cisc191.MusicLibraryMain" />
+      <module name="MusicLibrary" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.sdccd.cisc191.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MusicLibraryApp" />
+        <item itemvalue="Application.MusicLibraryMain" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="36a3bdc1-12c9-4356-a2da-a199cd213a43" name="Changes" comment="" />
+      <created>1676915837858</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1676915837858</updated>
+      <workItem from="1676915839000" duration="17168000" />
+      <workItem from="1676938925330" duration="5745000" />
+      <workItem from="1677036782049" duration="4324000" />
+      <workItem from="1677176449199" duration="1562000" />
+      <workItem from="1677178025789" duration="23079000" />
+      <workItem from="1677209179924" duration="64000" />
+      <workItem from="1677303928243" duration="4000" />
+      <workItem from="1677538339371" duration="11444000" />
+      <workItem from="1677625217767" duration="2180000" />
+      <workItem from="1677705256841" duration="45000" />
+      <workItem from="1677708765750" duration="760000" />
+      <workItem from="1677718096859" duration="13609000" />
+      <workItem from="1677781119375" duration="2214000" />
+      <workItem from="1677783674920" duration="3072000" />
+      <workItem from="1677899407903" duration="3126000" />
+      <workItem from="1677903546608" duration="216000" />
+    </task>
+    <task id="LOCAL-00001" summary="This is Music library project for school">
+      <created>1677199326262</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1677199326262</updated>
+    </task>
+    <task id="LOCAL-00002" summary="This is Music library project for school">
+      <created>1677199454322</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1677199454322</updated>
+    </task>
+    <task id="LOCAL-00003" summary="This is Music library project for school">
+      <created>1677199565833</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1677199565833</updated>
+    </task>
+    <task id="LOCAL-00004" summary="This is Music library project for school">
+      <created>1677199571596</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677199571596</updated>
+    </task>
+    <task id="LOCAL-00005" summary="This is Music library project for school">
+      <created>1677201399688</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1677201399688</updated>
+    </task>
+    <task id="LOCAL-00006" summary="This is Music library project for school">
+      <created>1677201508946</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1677201508946</updated>
+    </task>
+    <task id="LOCAL-00007" summary="This is Music library project for school">
+      <created>1677539238937</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1677539238937</updated>
+    </task>
+    <task id="LOCAL-00008" summary="This is Music library project for school">
+      <created>1677540100979</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677540100979</updated>
+    </task>
+    <task id="LOCAL-00009" summary="This is Music library project for school">
+      <created>1677545627463</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1677545627463</updated>
+    </task>
+    <task id="LOCAL-00010" summary="This is Music library project for school">
+      <created>1677554123088</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1677554123088</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Replaced the filepath String with this.filepath in MusicTrack">
+      <created>1677554280503</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1677554280503</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Replacing the this.filepath to the media instead of the String." />
+    <MESSAGE value="This is Music library project for school" />
+    <MESSAGE value="Replaced the filepath String with this.filepath in MusicTrack" />
+    <option name="LAST_COMMIT_MESSAGE" value="Replaced the filepath String with this.filepath in MusicTrack" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.reflect.InvocationTargetException" package="java.lang.reflect" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.UnsatisfiedLinkError" package="java.lang" />
+          <option name="timeStamp" value="2" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/MusicLibrary$MusicLibraryApp.ic" NAME="MusicLibraryApp Coverage Results" MODIFIED="1677190394705" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>edu.sdccd.cisc191.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/MusicLibrary$MusicLibraryMain.ic" NAME="MusicLibraryMain Coverage Results" MODIFIED="1677200828346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>edu.sdccd.cisc191.*</FILTER>
+    </SUITE>
+  </component>
+</project>
