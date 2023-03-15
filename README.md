@@ -1,4 +1,6 @@
 # MusicLibrary
+# v1.0.4
+
 Created a resource folder to store tracks, later will add and remove automatically from/to that folder.
 
 changed trackListViwe and Listener.
