@@ -1,12 +1,14 @@
 package edu.sdccd.cisc191;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class MusicLibraryUI extends VBox {
 
         // Create UI components
         Label titleLabel = new Label("Title:");
-        titleField = new TextField("test");
+        titleField = new TextField();
         Button playPauseButton = new Button("Play/Pause");
         Button stopButton = new Button("Stop");
         Button nextButton = new Button("Next");
@@ -38,6 +40,23 @@ public class MusicLibraryUI extends VBox {
         addTrackButton = new Button("Add Track");
         removeTrackButton = new Button("Remove Track");
         trackListView = new ListView<MusicTrack>();
+
+        trackListView.setCellFactory(param -> new ListCell<MusicTrack>() {
+            @Override
+            protected void updateItem(MusicTrack item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.getTitle() == null) {
+                    setText(null);
+                } else {
+                    setText(item.getTitle());
+                }
+            }
+        });
+
+        // Add the listener here
+        trackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            setCurrentTrack(newValue);
+        });
 
         // Set the style of the play button using the Styles class
         Styles.setButtonStyle(stopButton);
@@ -49,6 +68,21 @@ public class MusicLibraryUI extends VBox {
 
         // Initialize observableTracks with tracks from the library and set it as the items of the trackListView
         ObservableList<MusicTrack> observableTracks = FXCollections.observableArrayList(library.getTracks());
+        trackListView.setItems(observableTracks); // Set items for trackListView
+
+        // Add the trackListView to the UI
+        getChildren().add(trackListView);
+
+        // Add listener to update the currentTrack when a track is selected in the trackListView
+        library.addListener((ListChangeListener.Change<? extends MusicTrack> change) -> {
+            while (change.next()) {
+                if (change.wasAdded()) {
+                    observableTracks.addAll(change.getAddedSubList());
+                } else if (change.wasRemoved()) {
+                    observableTracks.removeAll(change.getRemoved());
+                }
+            }
+        });
 
         // Set event handler for the add track button
         addTrackButton.setOnAction(event -> {
@@ -56,6 +90,7 @@ public class MusicLibraryUI extends VBox {
             MusicTrack newTrack = new MusicTrack(titleField.getText(), "Unknown Artist", "Unknown Album",
                     "Unknown Genre", "/path/to/file.mp3");
             library.addTrack(newTrack);
+            observableTracks.add(newTrack);
         });
 
         // Set event handler for the remove track button
@@ -64,6 +99,7 @@ public class MusicLibraryUI extends VBox {
             MusicTrack selectedTrack = trackListView.getSelectionModel().getSelectedItem();
             if (selectedTrack != null) {
                 library.removeTrack(selectedTrack);
+                observableTracks.remove(selectedTrack);
             }
         });
 
@@ -83,14 +119,12 @@ public class MusicLibraryUI extends VBox {
         // Set event handler for the play/pause button
         playPauseButton.setOnAction(event -> {
             if (currentTrack != null) {
-                if (isPlaying) {
+                if (currentTrack.getPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
                     currentTrack.pause();
                     playPauseButton.setText("Play");
-                    isPlaying = false;
                 } else {
                     currentTrack.play();
                     playPauseButton.setText("Pause");
-                    isPlaying = true;
                 }
             }
         });
@@ -171,9 +205,17 @@ public class MusicLibraryUI extends VBox {
 
     // Set the current track
     public void setCurrentTrack(MusicTrack track) {
-        currentTrack = track;
         if (currentTrack != null) {
+            // Stop the current track before switching to the new one
+            currentTrack.stop();
+        }
+
+        currentTrack = track;
+
+        if (currentTrack != null) {
+            System.out.println("Playing track: " + currentTrack.getTitle()); // For debugging
             titleField.setText(currentTrack.getTitle());
+            currentTrack.play(); // Start playing the selected track
         } else {
             titleField.setText("");
         }

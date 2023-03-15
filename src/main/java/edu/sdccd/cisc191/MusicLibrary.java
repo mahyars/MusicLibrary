@@ -1,13 +1,26 @@
 package edu.sdccd.cisc191;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+
 import java.util.*;
 
 public class MusicLibrary {
+
+    private ObservableList<MusicTrack> tracks;
+
     // Create a 2D array to store tracks by genre
-    private Map <String, List<MusicTrack>> tracksByGenre;
+    private Map<String, List<MusicTrack>> tracksByGenre;
 
     public MusicLibrary() {
+        tracks = FXCollections.observableArrayList();
         tracksByGenre = new HashMap<>();
+    }
+
+    // Add a method to add a listener to the tracks list
+    public void addListener(ListChangeListener<MusicTrack> listener) {
+        tracks.addListener(listener);
     }
 
     public void addTrack(MusicTrack track) {

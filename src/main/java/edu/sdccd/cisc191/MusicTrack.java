@@ -5,6 +5,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.net.URL;
 
 public class MusicTrack {
     // Instance variables for the title, artist, album, genre, file path, and media player
@@ -19,7 +20,7 @@ public class MusicTrack {
     private double trackDuration;
 
     // Constructor that takes the title, artist, album, genre, and file path of the track
-    public MusicTrack(String title, String artist, String album, String genre, String filepath) {
+    public MusicTrack(String title, String artist, String album, String genre, String resourceName) {
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -27,27 +28,31 @@ public class MusicTrack {
         this.duration = 0;
         this.year = 0;
         this.player = null;
-        this.filepath = filepath.replace("\\","/");
+        this.filepath = resourceName;
 
         // Create a new media player from the file path, if the file exists
-        if (new File(this.filepath).exists()) {
-            Media media = new Media(new File(this.filepath).toURI().toString());
+        URL resourceUrl = getClass().getResource(resourceName);
+        if (resourceUrl != null) {
+            Media media = new Media(resourceUrl.toString());
             this.player = new MediaPlayer(media);
             this.player.setOnReady(() -> {
                 // get duration of the track in seconds
                 this.trackDuration = player.getTotalDuration().toSeconds();
             });
             this.player.setOnError(() -> {
-                System.err.println("Failed to create MediaPlayer");
+                Throwable error = player.getError();
+                System.err.println("Error occurred in MediaPlayer: " + error.getMessage());
+                error.printStackTrace();
             });
         } else {
-            throw new IllegalArgumentException("Invalid file path: " + this.filepath);
+            throw new IllegalArgumentException("Invalid file path: " + resourceName);
         }
     }
 
     // Method to play the track
     public void play() {
         if (player != null) {
+            System.out.println("Playing track: " + getTitle());
             player.play();
         }
     }
@@ -55,6 +60,7 @@ public class MusicTrack {
     // Method to pause the track
     public void pause() {
         if (player != null) {
+            System.out.println("Pausing track: " + getTitle());
             player.pause();
         }
     }
@@ -111,8 +117,8 @@ public class MusicTrack {
         return genre;
     }
 
-    public String getFilepath() {
-        return filepath;
+    public MediaPlayer getPlayer() {
+        return player;
     }
 
     // Getter method for the duration of the track
