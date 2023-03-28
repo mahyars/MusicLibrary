@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MusicLibraryApp extends Application {
 
@@ -17,6 +19,10 @@ public class MusicLibraryApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        // Disable jaudiotagger logging messages
+        Logger.getLogger("org.jaudiotagger").setLevel(Level.OFF);
+
         // create a new MusicLibrary object
         MusicLibrary library = new MusicLibrary();
 
@@ -26,7 +32,7 @@ public class MusicLibraryApp extends Application {
             List<MusicTrack> trackList = metadataReader.readMetadataForAllTracks();
             // add the tracks to the library
             library.addTracks(trackList);
-            System.out.println("trackList size: " + trackList.size());
+            System.out.println("trackList size: " + trackList.size() + "\n");
 
             // Call printLibraryInfo() to print the library information to the terminal
             library.printLibraryInfo();

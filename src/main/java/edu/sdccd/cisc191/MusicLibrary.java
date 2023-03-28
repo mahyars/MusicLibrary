@@ -84,12 +84,11 @@ public class MusicLibrary {
         // Get all tracks from a specific genre
         List<MusicTrack> tracks = tracksByGenre.getOrDefault(genre, new ArrayList<>());
 
-        System.out.println("Tracks by genre '" + genre + "': " + tracks.size());
+        //System.out.println("Tracks by genre '" + genre + "': " + tracks.size());
         return tracks;
     }
 
     // Method to print the library information to a terminal using I/O streams
-
     /**In this method, I used a PrintWriter to write the information to the terminal using I/O streams.
      * System.out is an instance of PrintStream, which is an output stream, so we can use it with
      * the PrintWriter. The true argument in the PrintWriter constructor enables auto-flushing,
@@ -100,13 +99,18 @@ public class MusicLibrary {
 
         out.println("Music Library:");
         out.println("--------------");
+        String format = "%-20s %-30s %-30s %-30s%n";
+        out.printf(format, "Genre", "Title", "Artist", "Album");
+        out.println(String.join("", Collections.nCopies(115, "-")));
+
         for (String genre : getGenres()) {
             List<MusicTrack> tracks = getTracksByGenre(genre);
-            out.println("Genre: " + genre);
+            out.println(genre);
+            String indent = "  ";
             for (MusicTrack track : tracks) {
-                out.printf("  - Title: %s, Artist: %s, Album: %s\n",
-                        track.getTitle(), track.getArtist(), track.getAlbum());
+                out.printf(indent + format, "", track.getTitle(), track.getArtist(), track.getAlbum());
             }
         }
+        out.println(String.join("", Collections.nCopies(115, "-")));
     }
 }

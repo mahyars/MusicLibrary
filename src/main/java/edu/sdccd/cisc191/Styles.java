@@ -21,7 +21,7 @@ public class Styles {
         String symbol;
         switch (button.getText()) {
             case "Play/Pause":
-                symbol = "\u25B6/\u23F8"; // Unicode character for "play" symbol
+                symbol = "\u25B6"; // Unicode character for "play" symbol
                 break;
             case "Stop":
                 symbol = "\u25A0"; // Unicode character for "stop" symbol

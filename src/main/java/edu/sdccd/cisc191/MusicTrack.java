@@ -74,12 +74,6 @@ public class MusicTrack {
                 player.currentTimeProperty()));
     }
 
-    private String formatDuration(Duration duration) {
-        int minutes = (int) duration.toMinutes();
-        int seconds = (int) (duration.toSeconds() % 60);
-        return String.format("%d:%02d", minutes, seconds);
-    }
-
     private void updateCurrentTime() {
         if (player != null) {
             player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
@@ -103,16 +97,6 @@ public class MusicTrack {
         if (player != null) {
             System.out.println("Playing track: " + getTitle());
             player.play();
-
-            // Add a listener to update the labels as the track progresses
-            player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
-                Duration currentTime = newValue;
-                Duration totalTime = player.getTotalDuration();
-                String timeString = formatDuration(currentTime) + " / " + formatDuration(totalTime);
-                if (timeLabel != null) {
-                    timeLabel.setText(timeString);
-                }
-            });
         }
     }
 
@@ -128,34 +112,6 @@ public class MusicTrack {
     public void stop() {
         if (player != null) {
             player.stop();
-        }
-    }
-
-    // Method to play the next track
-    public void next(String nextFilePath) {
-        if (player != null) {
-            // Stop the current player
-            player.stop();
-
-            // Create a new player for the next track and start playing it
-            Media media = new Media(new File(nextFilePath).toURI().toString());
-            player = new MediaPlayer(media);
-            player.setOnReady(() -> {
-                // get duration of the track in seconds
-                this.trackDuration = player.getTotalDuration().toSeconds();
-                player.play();
-            });
-            player.setOnError(() -> {
-                System.err.println("Failed to create MediaPlayer");
-            });
-        }
-    }
-
-    // Method to rewind the track
-    public void rewind() {
-        if (player != null) {
-            player.seek(player.getStartTime());
-            player.play();
         }
     }
 
