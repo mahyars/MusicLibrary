@@ -1,5 +1,6 @@
 package edu.sdccd.cisc191;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -9,37 +10,35 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 import java.util.List;
 
 public class MusicLibraryUI extends VBox {
     private MusicTrack currentTrack;
-    private TextField titleField;
-    private boolean isPlaying = false;
-    private Slider trackSlider;
-    private MusicLibrary library;
-    private ListView<MusicTrack> trackListView;
-    private Button addTrackButton;
-    private Button removeTrackButton;
-
+    private final TextField titleField = new TextField();
+    private final Slider trackSlider;
+    private final ListView<MusicTrack> trackListView;
+    private int currentTrackIndex;
+    private ChangeListener<Duration> timeListener;
+    private final Label durationLabel;
+    private Label timeLabel;
 
     public MusicLibraryUI(MusicLibrary library) {
 
-        // Add reference to MusicLibrary instance
-        this.library = library;
-
         // Create UI components
         Label titleLabel = new Label("Title:");
-        titleField = new TextField();
+        titleField.setEditable(false);
         Button playPauseButton = new Button("Play/Pause");
         Button stopButton = new Button("Stop");
         Button nextButton = new Button("Next");
         Button rewindButton = new Button("Rewind");
         trackSlider = new Slider();
         Label timeLabel = new Label("0:00");
-        addTrackButton = new Button("Add Track");
-        removeTrackButton = new Button("Remove Track");
-        trackListView = new ListView<MusicTrack>();
+        Button addTrackButton = new Button("Add Track");
+        Button removeTrackButton = new Button("Remove Track");
+        trackListView = new ListView<>();
+        durationLabel = new Label("0:00");
 
         trackListView.setCellFactory(param -> new ListCell<MusicTrack>() {
             @Override
@@ -53,7 +52,7 @@ public class MusicLibraryUI extends VBox {
             }
         });
 
-        // Add the listener here
+        // Add the listener
         trackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setCurrentTrack(newValue);
         });
@@ -123,7 +122,7 @@ public class MusicLibraryUI extends VBox {
                     currentTrack.pause();
                     playPauseButton.setText("Play");
                 } else {
-                    currentTrack.play();
+                    playTrack();
                     playPauseButton.setText("Pause");
                 }
             }
@@ -139,18 +138,27 @@ public class MusicLibraryUI extends VBox {
 
         nextButton.setOnAction(event -> {
             if (currentTrack != null) {
-                // Get the file path of the next track
-                // (I need to replace this with my own logic for selecting the next track)
-                String nextFilePath = "...";
-
-                // Play the next track
-                currentTrack.next(nextFilePath);
+                currentTrack.stop();
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+                currentTrackIndex++;
+                if (currentTrackIndex >= library.getTrackCount()) {
+                    currentTrackIndex = 0;
+                }
+                setCurrentTrack(library.getTrack(currentTrackIndex));
+                playTrack();
             }
         });
 
         rewindButton.setOnAction(event -> {
             if (currentTrack != null) {
-                currentTrack.rewind();
+                currentTrack.stop();
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+                currentTrackIndex--;
+                if (currentTrackIndex < 0) {
+                    currentTrackIndex = library.getTrackCount() - 1;
+                }
+                setCurrentTrack(library.getTrack(currentTrackIndex));
+                playTrack();
             }
         });
 
@@ -159,9 +167,17 @@ public class MusicLibraryUI extends VBox {
         trackSlider.setMin(0);
         trackSlider.setMax(100);
         trackSlider.setValue(0);
-        trackSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        trackSlider.setOnMousePressed(event -> {
             if (currentTrack != null) {
-                currentTrack.setTrackPosition(newValue.doubleValue() / 100 * currentTrack.getTrackDuration());
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+            }
+        });
+
+        trackSlider.setOnMouseReleased(event -> {
+            if (currentTrack != null) {
+                double position = trackSlider.getValue() / 100 * currentTrack.getTrackDuration();
+                currentTrack.setTrackPosition(position);
+                currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
             }
         });
 
@@ -173,10 +189,11 @@ public class MusicLibraryUI extends VBox {
         buttonBox.setSpacing(15);
         buttonBox.getChildren().addAll(rewindButton, stopButton, playPauseButton, nextButton);
 
-        //Create and VBox container to hole the time stamp
+        //Create and HBox container to hole the time stamp
         HBox timeStamp = new HBox();
         timeStamp.setAlignment(Pos.CENTER);
-        timeStamp.getChildren().addAll(timeLabel);
+        //timeStamp.getChildren().addAll(timeLabel);
+        timeStamp.getChildren().addAll(timeLabel, new Label("/"), durationLabel);
 
         // Create a VBox container to hold the title, text field, and button box
         VBox contentBox = new VBox();
@@ -203,21 +220,89 @@ public class MusicLibraryUI extends VBox {
         VBox.setVgrow(rewindButton, Priority.ALWAYS);
     }
 
+    public Slider getTrackSlider() {
+        return trackSlider;
+    }
+
+    public Label getTimeLabel() {
+        return timeLabel;
+    }
+
+    private void updateSliderPosition() {
+        if (currentTrack != null) {
+            timeListener = (observable, oldValue, newValue) -> {
+                trackSlider.setValue(newValue.toSeconds() / currentTrack.getTrackDuration() * 100);
+                // Update the timeLabel with the current position of the track
+                int currentPosition = (int) newValue.toSeconds();
+                int currentPositionMinutes = currentPosition / 60;
+                int currentPositionSeconds = currentPosition % 60;
+                timeLabel.setText(String.format("%d:%02d", currentPositionMinutes, currentPositionSeconds));
+            };
+            currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
+        }
+    }
+
+
     // Set the current track
     public void setCurrentTrack(MusicTrack track) {
+        // If there's a current track playing, stop it
         if (currentTrack != null) {
-            // Stop the current track before switching to the new one
-            currentTrack.stop();
+            try {
+                currentTrack.stop();
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+            } catch (Exception e) {
+                System.err.println("Error stopping the current track: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
 
+        // Set the new current track
         currentTrack = track;
 
+        // Check if the track is not null, to handle possible errors
         if (currentTrack != null) {
-            System.out.println("Playing track: " + currentTrack.getTitle()); // For debugging
-            titleField.setText(currentTrack.getTitle());
-            currentTrack.play(); // Start playing the selected track
+            try {
+                // Set the UI controls (slider and label) for the new track
+                currentTrack.setUIControls(trackSlider, timeLabel);
+                // Bind the slider to the new track's media player
+                currentTrack.bindSliderToPlayer(trackSlider);
+
+                // Set the timeListener
+                timeListener = (observable, oldValue, newValue) -> {
+                    trackSlider.setValue(newValue.toSeconds() / currentTrack.getTrackDuration() * 100);
+
+                    // Update the durationLabel with the total duration of the track
+                    int totalDuration = (int) currentTrack.getTrackDuration();
+                    int durationMinutes = totalDuration / 60;
+                    int durationSeconds = totalDuration % 60;
+                    durationLabel.setText(String.format("%d:%02d", durationMinutes, durationSeconds));
+                };
+
+                // Set the new current track
+                currentTrack = track;
+
+                // Update titleLabel's text
+                if (currentTrack != null) {
+                    titleField.setText(currentTrack.getTitle());
+                } else {
+                    titleField.setText("");
+                }
+
+                // Add the timeListener to the new track's media player
+                currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
+
+            } catch (Exception e) {
+                System.err.println("Error setting UI controls or binding slider: " + e.getMessage());
+                e.printStackTrace();
+            }
         } else {
-            titleField.setText("");
+            System.err.println("Error: MusicTrack is null in setCurrentTrack");
+        }
+    }
+    private void playTrack() {
+        if (currentTrack != null) {
+            currentTrack.bindSliderToPlayer(trackSlider);
+            currentTrack.play();
         }
     }
 }

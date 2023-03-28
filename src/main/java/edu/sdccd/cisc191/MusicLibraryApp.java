@@ -7,44 +7,48 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class MusicLibraryApp extends Application {
+
+    private static final int WINDOW_WIDTH = 400;
+    private static final int WINDOW_HEIGHT = 600;
+
     @Override
     public void start(Stage primaryStage) {
         // create a new MusicLibrary object
         MusicLibrary library = new MusicLibrary();
 
-        // create some sample tracks
-        MusicTrack track1 = new MusicTrack("NoLeafClover",
-                "Artist 1",
-                "Album 1",
-                "Genre 1",
-                "/NoLeafClover.mp3");
-        MusicTrack track2 = new MusicTrack("Title 2",
-                "Artist 2",
-                "Album 2",
-                "Genre 2",
-                "/SadButTrue.mp3");
-        MusicTrack track3 = new MusicTrack("Title 3",
-                "Artist 3",
-                "Album 3",
-                "Genre 3",
-                "/TheUnnamedFeeling.mp3");
+        MetadataReader metadataReader = new MetadataReader();
 
-        // add the tracks to the library
-        library.addTrack(track1);
-        library.addTrack(track2);
-        library.addTrack(track3);
+        try {
+            List<MusicTrack> trackList = metadataReader.readMetadataForAllTracks();
+            // add the tracks to the library
+            library.addTracks(trackList);
+            System.out.println("trackList size: " + trackList.size());
 
-        // remove a track from the library
-        //library.removeTrack(track2);
+            // Call printLibraryInfo() to print the library information to the terminal
+            library.printLibraryInfo();
+
+        }
+        catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         MusicLibraryUI ui = new MusicLibraryUI(library);
-        Scene scene = new Scene(ui, 400, 600);
+        Scene scene = new Scene(ui, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         // get the list of tracks from the library
         List<MusicTrack> tracks = library.getTracks();
+
+        if (!tracks.isEmpty()) {
+            // Get the first track from the list
+            MusicTrack firstTrack = tracks.get(0);
+
+            // Call setUIControls with trackSlider and timeLabel from MusicLibraryUI
+            firstTrack.setUIControls(ui.getTrackSlider(), ui.getTimeLabel());
+        }
 
         // Set the Horizontal grow and Vertical grow constraints for the UI elements
         HBox.setHgrow(ui, Priority.ALWAYS);

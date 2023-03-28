@@ -1,14 +1,16 @@
 package edu.sdccd.cisc191;
 
+import javafx.beans.binding.Bindings;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.net.URL;
 
 public class MusicTrack {
-    // Instance variables for the title, artist, album, genre, file path, and media player
+    // Instance variables for the title, artist, album, genre, file path, and media player...
     private String title;
     private String artist;
     private String album;
@@ -18,9 +20,14 @@ public class MusicTrack {
     private int year;
     private MediaPlayer player;
     private double trackDuration;
+    private Label timeLabel;
+    private Slider trackSlider;
+
 
     // Constructor that takes the title, artist, album, genre, and file path of the track
     public MusicTrack(String title, String artist, String album, String genre, String resourceName) {
+        System.out.println("Resource name: " + resourceName);
+
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -31,9 +38,9 @@ public class MusicTrack {
         this.filepath = resourceName;
 
         // Create a new media player from the file path, if the file exists
-        URL resourceUrl = getClass().getResource(resourceName);
-        if (resourceUrl != null) {
-            Media media = new Media(resourceUrl.toString());
+        File resourceFile = new File(resourceName);
+        if (resourceFile.exists()) {
+            Media media = new Media(resourceFile.toURI().toString());
             this.player = new MediaPlayer(media);
             this.player.setOnReady(() -> {
                 // get duration of the track in seconds
@@ -45,15 +52,67 @@ public class MusicTrack {
                 error.printStackTrace();
             });
         } else {
-            throw new IllegalArgumentException("Invalid file path: " + resourceName);
+            System.err.println("Resource not found: " + resourceName);
         }
     }
+
+    public void setUIControls(Slider trackSlider, Label timeLabel) {
+        this.trackSlider = trackSlider;
+        this.timeLabel = timeLabel;
+        updateCurrentTime();
+    }
+
+    public void bindSliderToPlayer(Slider trackSlider) {
+        // Bind the slider's maximum value to the track duration
+        trackSlider.maxProperty().bind(Bindings.createDoubleBinding(() ->
+                        player.getTotalDuration().toSeconds(),
+                player.totalDurationProperty()));
+
+        // Bind the slider's value to the current time of the player
+        trackSlider.valueProperty().bind(Bindings.createDoubleBinding(() ->
+                        player.getCurrentTime().toSeconds(),
+                player.currentTimeProperty()));
+    }
+
+    private String formatDuration(Duration duration) {
+        int minutes = (int) duration.toMinutes();
+        int seconds = (int) (duration.toSeconds() % 60);
+        return String.format("%d:%02d", minutes, seconds);
+    }
+
+    private void updateCurrentTime() {
+        if (player != null) {
+            player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                double currentTime = newValue.toSeconds();
+                double totalTime = getTrackDuration();
+                if (timeLabel != null) {
+                    timeLabel.setText(String.format("%d:%02d / %d:%02d",
+                            (int) currentTime / 60, (int) currentTime % 60,
+                            (int) totalTime / 60, (int) totalTime % 60));
+                }
+                if (trackSlider != null) {
+                    trackSlider.setValue(currentTime);
+                }
+            });
+        }
+    }
+
 
     // Method to play the track
     public void play() {
         if (player != null) {
             System.out.println("Playing track: " + getTitle());
             player.play();
+
+            // Add a listener to update the labels as the track progresses
+            player.currentTimeProperty().addListener((observable, oldValue, newValue) -> {
+                Duration currentTime = newValue;
+                Duration totalTime = player.getTotalDuration();
+                String timeString = formatDuration(currentTime) + " / " + formatDuration(totalTime);
+                if (timeLabel != null) {
+                    timeLabel.setText(timeString);
+                }
+            });
         }
     }
 
@@ -121,6 +180,10 @@ public class MusicTrack {
         return player;
     }
 
+    public String getFilepath() {
+        return filepath;
+    }
+
     // Getter method for the duration of the track
     public double getTrackDuration() {
         return trackDuration;
@@ -131,4 +194,3 @@ public class MusicTrack {
         player.seek(Duration.millis(duration));
     }
 }
-
