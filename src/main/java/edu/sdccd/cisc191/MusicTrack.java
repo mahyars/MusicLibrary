@@ -136,10 +136,6 @@ public class MusicTrack {
         return player;
     }
 
-    public String getFilepath() {
-        return filepath;
-    }
-
     // Getter method for the duration of the track
     public double getTrackDuration() {
         return trackDuration;

@@ -47,6 +47,14 @@ public class MusicLibraryApp extends Application {
 
         // get the list of tracks from the library
         List<MusicTrack> tracks = library.getTracks();
+        // Sort tracks by title
+        List<MusicTrack> sortedByTitle = MusicLibrary.sortTracksByAttribute(MusicLibrary.TrackAttribute.TITLE);
+
+        // Sort tracks by artist
+        List<MusicTrack> sortedByArtist = MusicLibrary.sortTracksByAttribute(MusicLibrary.TrackAttribute.ARTIST);
+
+        // Sort tracks by album
+        List<MusicTrack> sortedByAlbum = MusicLibrary.sortTracksByAttribute(MusicLibrary.TrackAttribute.ALBUM);
 
         if (!tracks.isEmpty()) {
             // Get the first track from the list

@@ -162,134 +162,168 @@ public class MusicLibraryUI extends VBox {
             }
         });
 
-            // Set up the track slider
-            trackSlider.setPrefWidth(200);
-            trackSlider.setMin(0);
-            trackSlider.setMax(100);
-            trackSlider.setValue(0);
-            trackSlider.setOnMousePressed(event -> {
-                if (currentTrack != null) {
-                    currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
-                }
-            });
+        // Set up the track slider
+        trackSlider.setPrefWidth(200);
+        trackSlider.setMin(0);
+        trackSlider.setMax(100);
+        trackSlider.setValue(0);
+        trackSlider.setOnMousePressed(event -> {
+            if (currentTrack != null) {
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+            }
+        });
 
-            // Set up the time listener
-            trackSlider.setOnMouseReleased(event -> {
-                if (currentTrack != null) {
-                    double position = trackSlider.getValue() / 100 * currentTrack.getTrackDuration();
-                    currentTrack.setTrackPosition(position);
-                    currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
-                }
-            });
+        // Set up the time listener
+        trackSlider.setOnMouseReleased(event -> {
+            if (currentTrack != null) {
+                double position = trackSlider.getValue() / 100 * currentTrack.getTrackDuration();
+                currentTrack.setTrackPosition(position);
+                currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
+            }
+        });
 
-            HBox.setHgrow(trackSlider, Priority.ALWAYS);
+        HBox.setHgrow(trackSlider, Priority.ALWAYS);
 
-            // Create an HBox container to hold the buttons and track slider
-            HBox buttonBox = new HBox();
-            buttonBox.setAlignment(Pos.CENTER);
-            buttonBox.setSpacing(15);
-            buttonBox.getChildren().addAll(rewindButton, stopButton, playPauseButton, nextButton);
+        // Create an HBox container to hold the buttons and track slider
+        HBox buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setSpacing(15);
+        buttonBox.getChildren().addAll(rewindButton, stopButton, playPauseButton, nextButton);
 
-            //Create an HBox container to hold the time stamp
-            HBox timeStamp = new HBox();
-            timeStamp.setAlignment(Pos.CENTER);
-            timeStamp.setSpacing(5);
-            timeStamp.getChildren().clear();
-            timeStamp.getChildren().add(timeLabel);
+        //Create an HBox container to hold the time stamp
+        HBox timeStamp = new HBox();
+        timeStamp.setAlignment(Pos.CENTER);
+        timeStamp.setSpacing(5);
+        timeStamp.getChildren().clear();
+        timeStamp.getChildren().add(timeLabel);
 
-            // Create a VBox container to hold the title, text field, and button box
-            VBox contentBox = new VBox();
-            contentBox.setSpacing(10);
-            contentBox.getChildren().addAll(titleLabel, titleField, trackSlider, timeStamp, buttonBox);
-            VBox.setVgrow(contentBox, Priority.ALWAYS);
+        // Create a VBox container to hold the title, text field, and button box
+        VBox contentBox = new VBox();
+        contentBox.setSpacing(10);
+        contentBox.getChildren().addAll(titleLabel, titleField, trackSlider, timeStamp, buttonBox);
+        VBox.setVgrow(contentBox, Priority.ALWAYS);
 
-            // Center the VBox container
-            setAlignment(Pos.CENTER);
+        // Center the VBox container
+        setAlignment(Pos.CENTER);
 
-            // Add UI components to the VBox
-            getChildren().addAll(contentBox);
+        /** GUI for the sorting options.
+         * The ComboBox control allows the user to select an option from a predefined list of items.
+         * The ComboBox is used for selecting a sorting attribute for the music tracks.
+         * */
+        // Create a ComboBox for selecting the sorting attribute
+        ComboBox<MusicLibrary.TrackAttribute> sortComboBox = new ComboBox<>();
+        ObservableList<MusicLibrary.TrackAttribute> sortOptions = FXCollections.observableArrayList(
+                MusicLibrary.TrackAttribute.TITLE, MusicLibrary.TrackAttribute.ARTIST, MusicLibrary.TrackAttribute.ALBUM
+        );
+        sortComboBox.setItems(sortOptions);
+        sortComboBox.getSelectionModel().selectFirst(); // Select the first option by default
 
-            // Set the Hgrow and Vgrow constraints for the UI elements
-            HBox.setHgrow(titleField, Priority.ALWAYS);
-            VBox.setVgrow(titleField, Priority.ALWAYS);
-            HBox.setHgrow(playPauseButton, Priority.ALWAYS);
-            VBox.setVgrow(playPauseButton, Priority.ALWAYS);
-            HBox.setHgrow(stopButton, Priority.ALWAYS);
-            VBox.setVgrow(stopButton, Priority.ALWAYS);
-            HBox.setHgrow(nextButton, Priority.ALWAYS);
-            VBox.setVgrow(nextButton, Priority.ALWAYS);
-            HBox.setHgrow(rewindButton, Priority.ALWAYS);
-            VBox.setVgrow(rewindButton, Priority.ALWAYS);
+        // Create a Button for triggering the sorting
+        Button sortButton = new Button("Sort");
+        Styles.setButtonStyle(sortButton); // If you have a custom style, apply it
+
+        // Set the event handler for the sort button
+        sortButton.setOnAction(event -> {
+            MusicLibrary.TrackAttribute selectedAttribute = sortComboBox.getSelectionModel().getSelectedItem();
+            List<MusicTrack> sortedTracks = library.sortTracksByAttribute(selectedAttribute);
+
+            // Update the UI (e.g., ListView or TableView) with the sorted tracks
+            trackListView.getItems().setAll(sortedTracks);
+        });
+
+        // Create an HBox container to hold the sort ComboBox and Button
+        HBox sortBox = new HBox();
+        sortBox.setAlignment(Pos.CENTER);
+        sortBox.setSpacing(10);
+        sortBox.getChildren().addAll(sortComboBox, sortButton);
+
+        // Add the HBox container to the contentBox
+        contentBox.getChildren().add(sortBox);
+
+        // Add UI components to the VBox
+        getChildren().addAll(contentBox);
+
+        // Set the Hgrow and Vgrow constraints for the UI elements
+        HBox.setHgrow(titleField, Priority.ALWAYS);
+        VBox.setVgrow(titleField, Priority.ALWAYS);
+        HBox.setHgrow(playPauseButton, Priority.ALWAYS);
+        VBox.setVgrow(playPauseButton, Priority.ALWAYS);
+        HBox.setHgrow(stopButton, Priority.ALWAYS);
+        VBox.setVgrow(stopButton, Priority.ALWAYS);
+        HBox.setHgrow(nextButton, Priority.ALWAYS);
+        VBox.setVgrow(nextButton, Priority.ALWAYS);
+        HBox.setHgrow(rewindButton, Priority.ALWAYS);
+        VBox.setVgrow(rewindButton, Priority.ALWAYS);
     }
 
-        public Slider getTrackSlider() {
-            return trackSlider;
-        }
+    public Slider getTrackSlider() {
+        return trackSlider;
+    }
 
-        public Label getTimeLabel() {
-            return timeLabel;
-        }
+    public Label getTimeLabel() {
+        return timeLabel;
+    }
 
-        // Set the current track
-        public void setCurrentTrack(MusicTrack track) {
-            // If there's a current track playing, stop it
-            if (currentTrack != null) {
-                try {
-                    currentTrack.stop();
-                    currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
-                } catch (Exception e) {
-                    System.err.println("Error stopping the current track: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-
-            // Set the new current track
-            currentTrack = track;
-
-            // Check if the track is not null, to handle possible errors
-            if (currentTrack != null) {
-                try {
-                    // Set the UI controls (slider and label) for the new track
-                    currentTrack.setUIControls(trackSlider, timeLabel);
-                    // Bind the slider to the new track's media player
-                    currentTrack.bindSliderToPlayer(trackSlider);
-
-                    // Set the timeListener
-                    timeListener = (observable, oldValue, newValue) -> {
-                        trackSlider.setValue(newValue.toSeconds() / currentTrack.getTrackDuration() * 100);
-
-                        // Update the durationLabel with the total duration of the track
-                        int totalDuration = (int) currentTrack.getTrackDuration();
-                        int durationMinutes = totalDuration / 60;
-                        int durationSeconds = totalDuration % 60;
-                        durationLabel.setText(String.format("%d:%02d", durationMinutes, durationSeconds));
-                    };
-
-                    // Set the new current track
-                    currentTrack = track;
-
-                    // Update titleLabel's text
-                    if (currentTrack != null) {
-                        titleField.setText(currentTrack.getTitle());
-                    } else {
-                        titleField.setText("");
-                    }
-
-                    // Add the timeListener to the new track's media player
-                    currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
-
-                } catch (Exception e) {
-                    System.err.println("Error setting UI controls or binding slider: " + e.getMessage());
-                    e.printStackTrace();
-                }
-            } else {
-                System.err.println("Error: MusicTrack is null in setCurrentTrack");
+    // Set the current track
+    public void setCurrentTrack(MusicTrack track) {
+        // If there's a current track playing, stop it
+        if (currentTrack != null) {
+            try {
+                currentTrack.stop();
+                currentTrack.getPlayer().currentTimeProperty().removeListener(timeListener);
+            } catch (Exception e) {
+                System.err.println("Error stopping the current track: " + e.getMessage());
+                e.printStackTrace();
             }
         }
-        private void playTrack() {
-            if (currentTrack != null) {
+
+        // Set the new current track
+        currentTrack = track;
+
+        // Check if the track is not null, to handle possible errors
+        if (currentTrack != null) {
+            try {
+                // Set the UI controls (slider and label) for the new track
+                currentTrack.setUIControls(trackSlider, timeLabel);
+                // Bind the slider to the new track's media player
                 currentTrack.bindSliderToPlayer(trackSlider);
-                currentTrack.play();
+
+                // Set the timeListener
+                timeListener = (observable, oldValue, newValue) -> {
+                    trackSlider.setValue(newValue.toSeconds() / currentTrack.getTrackDuration() * 100);
+
+                    // Update the durationLabel with the total duration of the track
+                    int totalDuration = (int) currentTrack.getTrackDuration();
+                    int durationMinutes = totalDuration / 60;
+                    int durationSeconds = totalDuration % 60;
+                    durationLabel.setText(String.format("%d:%02d", durationMinutes, durationSeconds));
+                };
+
+                // Set the new current track
+                currentTrack = track;
+
+                // Update titleLabel's text
+                if (currentTrack != null) {
+                    titleField.setText(currentTrack.getTitle());
+                } else {
+                    titleField.setText("");
+                }
+
+                // Add the timeListener to the new track's media player
+                currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);
+
+            } catch (Exception e) {
+                System.err.println("Error setting UI controls or binding slider: " + e.getMessage());
+                e.printStackTrace();
             }
+        } else {
+            System.err.println("Error: MusicTrack is null in setCurrentTrack");
         }
     }
+    private void playTrack() {
+        if (currentTrack != null) {
+            currentTrack.bindSliderToPlayer(trackSlider);
+            currentTrack.play();
+        }
+    }
+}

@@ -11,8 +11,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Chapter 9: Collections and Generics
+ * The MetadataReader class is responsible for reading metadata from audio files (specifically MP3 files).
+ * It uses the jaudiotagger library to extract metadata such as title, artist, album, and genre from the
+ * audio files. The class also demonstrates the use of Collections and Generics in Java.
+ */
+
 public class MetadataReader {
-    // Method to read metadata for a single track
+    /**
+     * Reads metadata for a single audio track given its file path.
+     * The jaudiotagger library is used to extract the metadata, and a MusicTrack object is created
+     * with the extracted information.
+     *
+     * @param audioFilePath The file path of the audio track to read metadata from.
+     * @return A MusicTrack object containing the metadata, or null if there was an error reading the file.
+     */
     public MusicTrack readMetadataForTrack(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
@@ -37,7 +50,16 @@ public class MetadataReader {
         }
         return null;
     }
-    // Method to read metadata for all tracks in the resources folder
+    /**
+     * Reads metadata for all audio tracks found in the resources folder.
+     * This method demonstrates the use of Collections and Generics in Java by creating a List of MusicTrack
+     * objects. It iterates through all the MP3 files in the resources folder and uses the
+     * readMetadataForTrack method to extract metadata for each track.
+     *
+     * @return A List<MusicTrack> containing the metadata for all audio tracks in the resources folder.
+     * @throws URISyntaxException If there is an issue converting the resource URL to a URI.
+     */
+
     public List<MusicTrack> readMetadataForAllTracks() throws URISyntaxException {
         // Create a list to store the MusicTrack objects
         List<MusicTrack> tracks = new ArrayList<>();
@@ -55,8 +77,6 @@ public class MetadataReader {
             System.err.println("Invalid resource folder URI");
             return tracks;
         }
-
-        //File resourcesFolder = new File(resourceUrl.getFile());
 
         System.out.println("Resources folder: " + resourcesFolder.getPath());
 
