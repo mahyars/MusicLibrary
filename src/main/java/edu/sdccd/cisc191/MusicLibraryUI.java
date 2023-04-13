@@ -6,6 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -18,7 +19,7 @@ public class MusicLibraryUI extends VBox {
     private MusicTrack currentTrack;
     private final TextField titleField = new TextField();
     private final Slider trackSlider;
-    private final ListView<MusicTrack> trackListView;
+    private final TableView<MusicTrack> trackTableView;
     private int currentTrackIndex;
     private ChangeListener<Duration> timeListener;
     private final Label durationLabel;
@@ -28,7 +29,7 @@ public class MusicLibraryUI extends VBox {
 
         // Initialize components
         trackSlider = new Slider();
-        trackListView = new ListView<>();
+        trackTableView = new TableView<>();
         durationLabel = new Label("0:00");
         timeLabel = new Label("0:00");
 
@@ -53,13 +54,24 @@ public class MusicLibraryUI extends VBox {
 
         // Initialize observableTracks and set it as the items of the trackListView
         ObservableList<MusicTrack> observableTracks = FXCollections.observableArrayList(library.getTracks());
-        trackListView.setItems(observableTracks);
+        trackTableView.setItems(observableTracks);
+
+        TableColumn<MusicTrack, String> titleColumn = new TableColumn<>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+
+        TableColumn<MusicTrack, String> albumColumn = new TableColumn<>("Album");
+        albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
+
+        TableColumn<MusicTrack, String> artistColumn = new TableColumn<>("Artist");
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
+
+        trackTableView.getColumns().addAll(titleColumn, albumColumn, artistColumn);
 
         // Add the trackListView to the UI
-        getChildren().add(trackListView);
+        getChildren().add(trackTableView);
 
         // Listeners and event handlers
-        trackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+        trackTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             setCurrentTrack(newValue);
         });
 
@@ -74,19 +86,6 @@ public class MusicLibraryUI extends VBox {
             }
         });
 
-        // Create and add the HBox for the title and genre
-        trackListView.setCellFactory(param -> new ListCell<MusicTrack>() {
-            @Override
-            protected void updateItem(MusicTrack item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null || item.getTitle() == null) {
-                    setText(null);
-                } else {
-                    setText(item.getTitle());
-                }
-            }
-        });
-
         // Set event handler for the add track button
         addTrackButton.setOnAction(event -> {
             MusicTrack newTrack = new MusicTrack(titleField.getText(), "Unknown Artist", "Unknown Album",
@@ -97,7 +96,7 @@ public class MusicLibraryUI extends VBox {
 
         // Set event handler for the remove track button
         removeTrackButton.setOnAction(event -> {
-            MusicTrack selectedTrack = trackListView.getSelectionModel().getSelectedItem();
+            MusicTrack selectedTrack = trackTableView.getSelectionModel().getSelectedItem();
             if (selectedTrack != null) {
                 library.removeTrack(selectedTrack);
                 observableTracks.remove(selectedTrack);
@@ -109,7 +108,7 @@ public class MusicLibraryUI extends VBox {
         genreChoiceBox.setOnAction(event -> {
             String selectedGenre = genreChoiceBox.getValue();
             List<MusicTrack> tracks = library.getTracksByGenre(selectedGenre);
-            trackListView.setItems(FXCollections.observableArrayList(tracks));
+            trackTableView.setItems(FXCollections.observableArrayList(tracks));
         });
 
         // Set event handler for the play/pause button
@@ -209,8 +208,8 @@ public class MusicLibraryUI extends VBox {
         /** GUI for the sorting options.
          * The ComboBox control allows the user to select an option from a predefined list of items.
          * The ComboBox is used for selecting a sorting attribute for the music tracks.
-         * */
-        // Create a ComboBox for selecting the sorting attribute
+         */
+
         ComboBox<MusicLibrary.TrackAttribute> sortComboBox = new ComboBox<>();
         ObservableList<MusicLibrary.TrackAttribute> sortOptions = FXCollections.observableArrayList(
                 MusicLibrary.TrackAttribute.TITLE, MusicLibrary.TrackAttribute.ARTIST, MusicLibrary.TrackAttribute.ALBUM
@@ -220,7 +219,6 @@ public class MusicLibraryUI extends VBox {
 
         // Create a Button for triggering the sorting
         Button sortButton = new Button("Sort");
-        Styles.setButtonStyle(sortButton); // If you have a custom style, apply it
 
         // Set the event handler for the sort button
         sortButton.setOnAction(event -> {
@@ -228,7 +226,7 @@ public class MusicLibraryUI extends VBox {
             List<MusicTrack> sortedTracks = library.sortTracksByAttribute(selectedAttribute);
 
             // Update the UI (e.g., ListView or TableView) with the sorted tracks
-            trackListView.getItems().setAll(sortedTracks);
+            trackTableView.getItems().setAll(sortedTracks);
         });
 
         // Create an HBox container to hold the sort ComboBox and Button
