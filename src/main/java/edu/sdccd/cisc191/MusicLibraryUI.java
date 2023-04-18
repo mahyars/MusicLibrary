@@ -15,6 +15,12 @@ import javafx.util.Duration;
 
 import java.util.List;
 
+/**
+ * MusicLibraryUI is a class that provides a user interface for managing a music library.
+ * It contains a TableView for displaying tracks, buttons for controlling playback, and
+ * options for sorting and filtering tracks.
+ */
+
 public class MusicLibraryUI extends VBox {
     private MusicTrack currentTrack;
     private final TextField titleField = new TextField();
@@ -23,8 +29,14 @@ public class MusicLibraryUI extends VBox {
     private int currentTrackIndex;
     private ChangeListener<Duration> timeListener;
     private final Label durationLabel;
-    private Label timeLabel;
+    private final Label timeLabel;
 
+    /**
+     * Constructor for MusicLibraryUI, which initializes and configures UI components,
+     * event listeners, and event handlers.
+     *
+     * @param library the MusicLibrary instance to manage
+     */
     public MusicLibraryUI(MusicLibrary library) {
 
         // Initialize components
@@ -116,10 +128,10 @@ public class MusicLibraryUI extends VBox {
             if (currentTrack != null) {
                 if (currentTrack.getPlayer().getStatus() == MediaPlayer.Status.PLAYING) {
                     currentTrack.pause();
-                    playPauseButton.setText("\u25B6");
+                    playPauseButton.setText("▶");
                 } else {
                     playTrack();
-                    playPauseButton.setText("\u23F8");
+                    playPauseButton.setText("⏸");
                 }
             }
         });
@@ -128,7 +140,7 @@ public class MusicLibraryUI extends VBox {
         stopButton.setOnAction(event -> {
             if (currentTrack != null) {
                 currentTrack.stop();
-                playPauseButton.setText("\u25B6");
+                playPauseButton.setText("▶");
                 trackSlider.setValue(0);
             }
         });
@@ -205,11 +217,10 @@ public class MusicLibraryUI extends VBox {
         // Center the VBox container
         setAlignment(Pos.CENTER);
 
-        /** GUI for the sorting options.
-         * The ComboBox control allows the user to select an option from a predefined list of items.
-         * The ComboBox is used for selecting a sorting attribute for the music tracks.
+        /* GUI for the sorting options.
+          The ComboBox control allows the user to select an option from a predefined list of items.
+          The ComboBox is used for selecting a sorting attribute for the music tracks.
          */
-
         ComboBox<MusicLibrary.TrackAttribute> sortComboBox = new ComboBox<>();
         ObservableList<MusicLibrary.TrackAttribute> sortOptions = FXCollections.observableArrayList(
                 MusicLibrary.TrackAttribute.TITLE, MusicLibrary.TrackAttribute.ARTIST, MusicLibrary.TrackAttribute.ALBUM
@@ -223,7 +234,7 @@ public class MusicLibraryUI extends VBox {
         // Set the event handler for the sort button
         sortButton.setOnAction(event -> {
             MusicLibrary.TrackAttribute selectedAttribute = sortComboBox.getSelectionModel().getSelectedItem();
-            List<MusicTrack> sortedTracks = library.sortTracksByAttribute(selectedAttribute);
+            List<MusicTrack> sortedTracks = MusicLibrary.sortTracksByAttribute(selectedAttribute);
 
             // Update the UI (e.g., ListView or TableView) with the sorted tracks
             trackTableView.getItems().setAll(sortedTracks);
@@ -262,7 +273,13 @@ public class MusicLibraryUI extends VBox {
         return timeLabel;
     }
 
-    // Set the current track
+    /**
+     * Sets the current track in the MusicLibrary and updates the user interface accordingly.
+     * If a track is already playing, this method stops the current track, removes its listener,
+     * and replaces it with the new track provided.
+     *
+     * @param track the new current track to be set
+     */
     public void setCurrentTrack(MusicTrack track) {
         // If there's a current track playing, stop it
         if (currentTrack != null) {
@@ -301,11 +318,7 @@ public class MusicLibraryUI extends VBox {
                 currentTrack = track;
 
                 // Update titleLabel's text
-                if (currentTrack != null) {
-                    titleField.setText(currentTrack.getTitle());
-                } else {
-                    titleField.setText("");
-                }
+                titleField.setText(currentTrack.getTitle());
 
                 // Add the timeListener to the new track's media player
                 currentTrack.getPlayer().currentTimeProperty().addListener(timeListener);

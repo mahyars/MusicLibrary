@@ -17,7 +17,7 @@ public class MusicLibrary {
     /**A map that stores tracks by genre, where the key is the genre and the value is a list of MusicTrack objects
      * This demonstrates the use of Generics and Collections (HashMap and ArrayList)
      * */
-    private Map<String, List<MusicTrack>> tracksByGenre;
+    private final Map<String, List<MusicTrack>> tracksByGenre;
 
     /**An observable list that stores all the tracks in the music library
      * This demonstrates the use of Generics and Collections (ObservableList)
@@ -93,10 +93,7 @@ public class MusicLibrary {
 
     public List<MusicTrack> getTracksByGenre(String genre) {
         // Get all tracks from a specific genre
-        List<MusicTrack> tracks = tracksByGenre.getOrDefault(genre, new ArrayList<>());
-
-        //System.out.println("Tracks by genre '" + genre + "': " + tracks.size());
-        return tracks;
+        return tracksByGenre.getOrDefault(genre, new ArrayList<>());
     }
 
     /** Module 7: I/O Streams:
@@ -136,15 +133,12 @@ public class MusicLibrary {
     /**
      * The sortTracksByAttribute method is a utility method that sorts a list of
      * MusicTrack objects based on the specified TrackAttribute.
-     *
-     * @param attribute The TrackAttribute to sort by (e.g., TITLE, ARTIST, ALBUM).
+     ** @param attribute The TrackAttribute to sort by (e.g., TITLE, ARTIST, ALBUM).
      * @return A new list of MusicTrack objects sorted by the specified attribute.
-     *
      * Usage:
-     * 1. Call the sortTracksByAttribute method with a specific TrackAttribute:
+     ** 1. Call the sortTracksByAttribute method with a specific TrackAttribute:
      *    List<MusicTrack> sortedTracks = sortTracksByAttribute(TrackAttribute.TITLE);
-     *
-     * 2. Use the sorted list of tracks as needed, for example, update the UI
+     ** 2. Use the sorted list of tracks as needed, for example, update the UI
      *    with the sorted tracks:
      *    yourTrackListView.getItems().setAll(sortedTracks);
      */

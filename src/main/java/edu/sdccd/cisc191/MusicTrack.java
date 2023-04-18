@@ -11,13 +11,10 @@ import java.io.File;
 
 public class MusicTrack {
     // Instance variables for the title, artist, album, genre, file path, and media player...
-    private String title;
-    private String artist;
-    private String album;
-    private String genre;
-    private String filepath;
-    private int duration;
-    private int year;
+    private final String title;
+    private final String artist;
+    private final String album;
+    private final String genre;
     private MediaPlayer player;
     private double trackDuration;
     private Label timeLabel;
@@ -32,10 +29,7 @@ public class MusicTrack {
         this.artist = artist;
         this.album = album;
         this.genre = genre;
-        this.duration = 0;
-        this.year = 0;
         this.player = null;
-        this.filepath = resourceName;
 
         // Create a new media player from the file path, if the file exists
         File resourceFile = new File(resourceName);
