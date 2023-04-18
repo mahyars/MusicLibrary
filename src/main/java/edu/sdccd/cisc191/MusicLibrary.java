@@ -99,8 +99,7 @@ public class MusicLibrary {
         return tracks;
     }
 
-
-    /** Chapter 7: I/O Streams:
+    /** Module 7: I/O Streams:
      * In this method, I used a PrintWriter to write the information to the terminal using I/O streams.
      * System.out is an instance of PrintStream, which is an output stream, so we can use it with
      * the PrintWriter. The true argument in the PrintWriter constructor enables auto-flushing,
@@ -126,7 +125,7 @@ public class MusicLibrary {
         out.println(String.join("", Collections.nCopies(115, "-")));
     }
 
-    /** Chapter 11: Sorting:
+    /** Module 11: Sorting:
      * The TrackAttribute enum represents various attributes of a music track
      * that can be used for sorting, such as TITLE, ARTIST, and ALBUM.
      */

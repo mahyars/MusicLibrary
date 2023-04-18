@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Chapter 9: Collections and Generics
+/** Module 9: Collections and Generics
  * The MetadataReader class is responsible for reading metadata from audio files (specifically MP3 files).
  * It uses the jaudiotagger library to extract metadata such as title, artist, album, and genre from the
  * audio files. The class also demonstrates the use of Collections and Generics in Java.
