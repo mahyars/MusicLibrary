@@ -31,7 +31,7 @@ public class MusicLibraryUI extends VBox {
     private final Label durationLabel;
     private final Label timeLabel;
 
-    /**
+    /*
      * Constructor for MusicLibraryUI, which initializes and configures UI components,
      * event listeners, and event handlers.
      *
@@ -273,7 +273,7 @@ public class MusicLibraryUI extends VBox {
         return timeLabel;
     }
 
-    /**
+    /*
      * Sets the current track in the MusicLibrary and updates the user interface accordingly.
      * If a track is already playing, this method stops the current track, removes its listener,
      * and replaces it with the new track provided.

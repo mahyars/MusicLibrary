@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class MetadataReader {
-    /**
+    /*
      * Reads metadata for a single audio track given its file path.
      * The jaudiotagger library is used to extract the metadata, and a MusicTrack object is created
      * with the extracted information.
@@ -26,7 +26,7 @@ public class MetadataReader {
      * @param audioFilePath The file path of the audio track to read metadata from.
      * @return A MusicTrack object containing the metadata, or null if there was an error reading the file.
      */
-    public MusicTrack readMetadataForTrack(String audioFilePath) {
+    public static MusicTrack readMetadataForTrack(String audioFilePath) {
         try {
             File audioFile = new File(audioFilePath);
             if (!audioFile.exists()) {
@@ -50,7 +50,7 @@ public class MetadataReader {
         }
         return null;
     }
-    /**
+    /*
      * Reads metadata for all audio tracks found in the resources folder.
      * This method demonstrates the use of Collections and Generics in Java by creating a List of MusicTrack
      * objects. It iterates through all the MP3 files in the resources folder and uses the
