@@ -25,7 +25,7 @@ public class MusicLibraryUI extends VBox {
     private MusicTrack currentTrack;
     private final TextField titleField = new TextField();
     private final Slider trackSlider;
-    private final TableView<MusicTrack> trackTableView;
+    private final TableView<MusicTrack> trackTableView = new TableView<>();
     private int currentTrackIndex;
     private ChangeListener<Duration> timeListener;
     private final Label durationLabel;
@@ -41,7 +41,6 @@ public class MusicLibraryUI extends VBox {
 
         // Initialize components
         trackSlider = new Slider();
-        trackTableView = new TableView<>();
         durationLabel = new Label("0:00");
         timeLabel = new Label("0:00");
 
