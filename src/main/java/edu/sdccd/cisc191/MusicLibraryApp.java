@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191;
-
+/*
+  CISC191 Architect Assignment 3
+  @author Mahyar saadati
+ */
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;

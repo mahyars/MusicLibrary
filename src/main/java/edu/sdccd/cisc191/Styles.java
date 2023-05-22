@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191;
-
+/*
+  CISC191 Architect Assignment 3
+  @author Mahyar saadati
+ */
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.paint.Color;

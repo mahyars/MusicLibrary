@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191;
-
+/*
+  CISC191 Architect Assignment 3
+  @author Mahyar saadati
+ */
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -15,6 +18,7 @@ public class MusicTrack {
     private final String artist;
     private final String album;
     private final String genre;
+    private final String resourceName;
     private MediaPlayer player;
     private double trackDuration;
     private Label timeLabel;
@@ -30,25 +34,33 @@ public class MusicTrack {
         this.album = album;
         this.genre = genre;
         this.player = null;
+        this.resourceName = resourceName;
+    }
 
         // Create a new media player from the file path, if the file exists
-        File resourceFile = new File(resourceName);
-        if (resourceFile.exists()) {
-            Media media = new Media(resourceFile.toURI().toString());
-            this.player = new MediaPlayer(media);
-            this.player.setOnReady(() -> {
-                // get duration of the track in seconds
-                this.trackDuration = player.getTotalDuration().toSeconds();
-            });
-            this.player.setOnError(() -> {
-                Throwable error = player.getError();
-                System.err.println("Error occurred in MediaPlayer: " + error.getMessage());
-                error.printStackTrace();
-            });
-        } else {
-            System.err.println("Resource not found: " + resourceName);
+        public void createMediaPlayer() {
+            // Create a new media player from the file path, if the file exists
+            File resourceFile = new File(this.resourceName);
+            if (resourceFile.exists()) {
+                Media media = new Media(resourceFile.toURI().toString());
+                this.player = new MediaPlayer(media);
+
+                /* This lambda expression doesn't take any arguments and doesn't return a result. It's a compact way of implementing
+                 * the Runnable interface's run() method. The code inside the lambda expression gets executed when the MediaPlayer object
+                 * is ready, i.e., it has enough media data to start playing.*/
+                this.player.setOnReady(() -> {
+                    // get duration of the track in seconds
+                    this.trackDuration = player.getTotalDuration().toSeconds();
+                });
+                this.player.setOnError(() -> {
+                    Throwable error = player.getError();
+                    System.err.println("Error occurred in MediaPlayer: " + error.getMessage());
+                    error.printStackTrace();
+                });
+            } else {
+                System.err.println("Resource not found: " + resourceName);
+            }
         }
-    }
 
     public void setUIControls(Slider trackSlider, Label timeLabel) {
         this.trackSlider = trackSlider;
@@ -67,6 +79,14 @@ public class MusicTrack {
                         player.getCurrentTime().toSeconds(),
                 player.currentTimeProperty()));
     }
+
+    /** Module 14: Lambda Expressions
+     * A lambda expression is used in the updateCurrentTime() method to add a listener
+     * to the player's currentTimeProperty.
+     * The listener updates the timeLabel and trackSlider to reflect the current time of the track.
+     * This lambda expression takes three arguments (observable, oldValue, newValue) and doesn't return a result.
+     * It's a compact way of implementing the ChangeListener interface's changed() method.
+     */
 
     private void updateCurrentTime() {
         if (player != null) {

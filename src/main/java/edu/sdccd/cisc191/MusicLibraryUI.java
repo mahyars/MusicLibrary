@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191;
-
+/*
+  CISC191 Architect Assignment 3
+  @author Mahyar saadati
+ */
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;

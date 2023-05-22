@@ -1,5 +1,8 @@
 package edu.sdccd.cisc191;
-
+/*
+  CISC191 Architect Assignment 2
+  @author Mahyar saadati
+ */
 import javafx.collections.ListChangeListener;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
